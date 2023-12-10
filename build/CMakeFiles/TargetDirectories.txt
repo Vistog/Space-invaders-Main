@@ -1,0 +1,3 @@
+/Space-invaders-Main/build/CMakeFiles/invaders.dir
+/Space-invaders-Main/build/CMakeFiles/edit_cache.dir
+/Space-invaders-Main/build/CMakeFiles/rebuild_cache.dir
