@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Headers/PowerUp.hpp"
+#include "Headers/Global.hpp"
+
 class Ufo
 {
 	bool dead;
@@ -27,7 +30,7 @@ public:
 
 	bool check_bullet_collision(std::mt19937_64& i_random_engine, const sf::IntRect& i_bullet_hitbox);
 
-	unsigned char check_powerup_collision(const sf::IntRect& i_player_hitbox);
+	Power_type check_powerup_collision(const sf::IntRect& i_player_hitbox);
 
 	void draw(sf::RenderWindow& i_window);
 	void reset(bool i_dead, std::mt19937_64& i_random_engine);

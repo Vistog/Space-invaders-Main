@@ -56,7 +56,7 @@ void Player::draw(sf::RenderWindow& i_window)
 	if (dead == false)
 	{
 		sprite.setPosition(x, y);
-		sprite.setTextureRect(sf::IntRect(BASE_SIZE * current_power, 0, BASE_SIZE, BASE_SIZE));
+		sprite.setTextureRect(sf::IntRect(BASE_SIZE * static_cast<int>(current_power), 0, BASE_SIZE, BASE_SIZE));
 
 		for (const Bullet& bullet : bullets)
 		{
@@ -69,13 +69,13 @@ void Player::draw(sf::RenderWindow& i_window)
 
 
 
-		if (0 == shield_animation_over)
+		if (shield_animation_over == false)
 		{
 			//Once we get hit while having a shield, the shield will be destroyed. We'll show a blue explosion.
 			explosion.draw(x, y, i_window, sf::Color(0, 109, 255));
 		}
 	}
-	else if (0 == dead_animation_over)
+	else if (dead_animation_over == false)
 	{
 		explosion.draw(x, y, i_window, sf::Color(255, 36, 0));
 	}
@@ -90,7 +90,7 @@ void Player::reset()
 	last_move = Move_direction::Stable;
 	current_move = Move_direction::Stable;
 
-	current_power = 0;
+	current_power = Power_type::Nothing;
 	reload_timer = 0;
 
 	power_timer = 0;
@@ -104,13 +104,13 @@ void Player::reset()
 
 void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy_bullets, std::vector<Enemy>& i_enemies, Ufo& i_ufo)
 {
-	if (0 == dead)
+	if (dead == false)
 	{
 		Power_type powerup_type;
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) == true)
 		{
-			if (Power_type::Mirror == current_power)
+			if (current_power == Power_type::Mirror)
 			{
 				x = std::min<int>(PLAYER_MOVE_SPEED + x, SCREEN_WIDTH - 2 * BASE_SIZE);
 
@@ -128,7 +128,7 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) == true)
 		{
-			if (4 == current_power)
+			if (current_power == Power_type::Mirror)
 			{
 				x = std::max<int>(x - PLAYER_MOVE_SPEED, BASE_SIZE);
 								
@@ -163,7 +163,7 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 
 				bullets.push_back(Bullet(0, -PLAYER_BULLET_SPEED, x, y));
 
-				if (current_power == Power_type::Tr)
+				if (current_power == Power_type::Triple_bullets)
 				{
 					bullets.push_back(Bullet(0, -PLAYER_BULLET_SPEED, x - 0.375f * BASE_SIZE, y));
 					bullets.push_back(Bullet(0, -PLAYER_BULLET_SPEED, x + 0.375f * BASE_SIZE, y));
@@ -179,9 +179,9 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 		{
 			if (1 == get_hitbox().intersects(enemy_bullet.get_hitbox()))
 			{
-				if (1 == current_power)
+				if (current_power == Power_type::Shield)
 				{
-					current_power = 0;
+					current_power = Power_type::Nothing;
 
 					shield_animation_over = 0;
 				}

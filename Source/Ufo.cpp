@@ -24,37 +24,37 @@ Ufo::Ufo(std::mt19937_64& i_random_engine) :
 
 bool Ufo::check_bullet_collision(std::mt19937_64& i_random_engine, const sf::IntRect& i_bullet_hitbox)
 {
-	if (0 == dead)
+	if (dead == false)
 	{
-		if (1 == get_hitbox().intersects(i_bullet_hitbox))
+		if (get_hitbox().intersects(i_bullet_hitbox) == true)
 		{
 			dead = 1;
 
 			explosion_x = x;
 
-			powerups.push_back(Powerup(x + 0.5f * BASE_SIZE, y, powerup_distribution(i_random_engine)));
+			powerups.push_back(Powerup(x + 0.5f * BASE_SIZE, y, static_cast<Power_type>(powerup_distribution(i_random_engine))));
 
-			return 1;
+			return true;
 		}
 	}
 	
 	return 0;
 }
 
-unsigned char Ufo::check_powerup_collision(const sf::IntRect& i_player_hitbox)
+Power_type Ufo::check_powerup_collision(const sf::IntRect& i_player_hitbox)
 {
 	for (Powerup& powerup : powerups)
 	{
-		if (0 == powerup.dead && 1 == powerup.get_hitbox().intersects(i_player_hitbox))
+		if (powerup.dead == false && powerup.get_hitbox().intersects(i_player_hitbox) == true)
 		{
-			powerup.dead = 1;
+			powerup.dead = true;
 
 			//Plus 1, because 0 means we didn't pick up any powerups.
-			return 1 + powerup.type;
+			return powerup.type;
 		}
 	}
 	
-	return 0;
+	return Power_type::Nothing;
 }
 
 void Ufo::draw(sf::RenderWindow& i_window)
@@ -71,7 +71,7 @@ void Ufo::draw(sf::RenderWindow& i_window)
 
 	for (Powerup& powerup : powerups)
 	{
-		powerup_animations[powerup.type].draw(powerup.x, powerup.y, i_window);
+		powerup_animations[static_cast<int>(powerup.type)].draw(powerup.x, powerup.y, i_window);
 	}
 }
 
@@ -93,26 +93,26 @@ void Ufo::reset(bool i_dead, std::mt19937_64& i_random_engine)
 
 void Ufo::tick(std::mt19937_64& i_random_engine)
 {
-	if (0 == dead)
+	if (dead == false)
 	{
 		x -= UFO_MOVE_SPEED;
 
 		//As soon as the UFO leaves the screen, it gets destroyed. But no powerups will appear.
 		if (x <= -2 * BASE_SIZE)
 		{
-			dead = 1;
+			dead = true;
 		}
 
 		animation.tick();
 	}
 	else
 	{
-		if (0 == dead_animation_over)
+		if (dead_animation_over == false)
 		{
 			dead_animation_over = explosion.tick();
 		}
 
-		if (0 == timer)
+		if (timer == 0)
 		{
 			reset(0, i_random_engine);
 		}
