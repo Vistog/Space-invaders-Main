@@ -25,16 +25,17 @@ class Ufo
 
 	Animation animation;
 	Animation explosion;
+	std::mt19937_64& random_engine;
 public:
 	Ufo(std::mt19937_64& i_random_engine, std::vector<Powerup>& main_powerups);
 
-	bool check_bullet_collision(std::mt19937_64& i_random_engine, const sf::IntRect& i_bullet_hitbox);
+	bool check_bullet_collision(const sf::IntRect& i_bullet_hitbox);
 
 	Power_type check_powerup_collision(const sf::IntRect& i_player_hitbox);
 
 	void draw(sf::RenderWindow& i_window);
-	void reset(bool i_dead, std::mt19937_64& i_random_engine);
-	void tick(std::mt19937_64& i_random_engine);
+	void reset(bool i_dead);
+	void tick();
 
 	sf::IntRect get_hitbox() const;
 };

@@ -5,6 +5,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+
 class Player
 {
 	bool dead;

@@ -13,9 +13,10 @@ Ufo::Ufo(std::mt19937_64& i_random_engine, std::vector<Powerup>& main_powerups) 
 	timer_distribution(UFO_TIMER_MIN, UFO_TIMER_MAX),
 	animation(UFO_ANIMATION_SPEED, 2 * BASE_SIZE, "Resources/Images/Ufo.png"),
 	explosion(EXPLOSION_ANIMATION_SPEED, 2 * BASE_SIZE, "Resources/Images/ExplosionBig.png"),
-	powerups(main_powerups)
+	powerups(main_powerups),
+	random_engine(i_random_engine)
 {
-	reset(1, i_random_engine);
+	reset(1);
 
 	for (unsigned char a = 0; a < POWERUP_TYPES; a++)
 	{
@@ -23,7 +24,7 @@ Ufo::Ufo(std::mt19937_64& i_random_engine, std::vector<Powerup>& main_powerups) 
 	}
 }
 
-bool Ufo::check_bullet_collision(std::mt19937_64& i_random_engine, const sf::IntRect& i_bullet_hitbox)
+bool Ufo::check_bullet_collision(const sf::IntRect& i_bullet_hitbox)
 {
 	if (dead == false)
 	{
@@ -33,7 +34,7 @@ bool Ufo::check_bullet_collision(std::mt19937_64& i_random_engine, const sf::Int
 
 			explosion_x = x;
 
-			powerups.push_back(Powerup(x + 0.5f * BASE_SIZE, y, static_cast<Power_type>(powerup_distribution(i_random_engine))));
+			powerups.push_back(Powerup(x + 0.5f * BASE_SIZE, y, static_cast<Power_type>(powerup_distribution(random_engine))));
 
 			return true;
 		}
@@ -74,7 +75,7 @@ void Ufo::draw(sf::RenderWindow& i_window)
 	}
 }
 
-void Ufo::reset(bool i_dead, std::mt19937_64& i_random_engine)
+void Ufo::reset(bool i_dead)
 {
 	dead = i_dead;
 	dead_animation_over = 0;
@@ -82,7 +83,7 @@ void Ufo::reset(bool i_dead, std::mt19937_64& i_random_engine)
 	explosion_x = SCREEN_WIDTH;
 	x = SCREEN_WIDTH;
 
-	timer = timer_distribution(i_random_engine);
+	timer = timer_distribution(random_engine);
 
 	powerups.clear();
 
@@ -90,7 +91,7 @@ void Ufo::reset(bool i_dead, std::mt19937_64& i_random_engine)
 	explosion.reset();
 }
 
-void Ufo::tick(std::mt19937_64& i_random_engine)
+void Ufo::tick()
 {
 	if (dead == false)
 	{
@@ -113,25 +114,11 @@ void Ufo::tick(std::mt19937_64& i_random_engine)
 
 		if (timer == 0)
 		{
-			reset(0, i_random_engine);
+			reset(0);
 		}
 		else
 		{
 			timer--;
-		}
-	}
-
-	for (Powerup& powerup : powerups)
-	{
-		//Why didn't I made an tick function for the powerups?
-		//No, seriously.
-		//I did it for the Bullet struct.
-		//But not for the Powerup struct.
-		powerup.y += POWERUP_SPEED;
-
-		if (SCREEN_HEIGHT <= powerup.y)
-		{
-			powerup.dead = 1;
 		}
 	}
 

@@ -106,7 +106,7 @@ int main()
 
 						enemy_manager.reset(level);
 
-						ufo.reset(1, random_engine);
+						ufo.reset(1);
 					}
 					else //Here we're showing the next level transition.
 					{
@@ -121,7 +121,7 @@ int main()
 
 					enemy_manager.tick(random_engine);
 
-					ufo.tick(random_engine);
+					ufo.tick();
 
 					for (Powerup& powerup : powerups) {
 						powerup.tick();
@@ -138,7 +138,7 @@ int main()
 
 				enemy_manager.reset(level);
 
-				ufo.reset(1, random_engine);
+				ufo.reset(1);
 			}
 
 			if (FRAME_DURATION > lag)
