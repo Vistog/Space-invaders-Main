@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Headers/Global.hpp"
+#include "Global.hpp"
+#include <array>
+#include <vector>
+#include <SFML/Graphics.hpp>
 
 class Player
 {

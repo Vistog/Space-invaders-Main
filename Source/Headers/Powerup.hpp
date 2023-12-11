@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Headers/Global.hpp"
+#include "Global.hpp"
 
 
 struct Powerup

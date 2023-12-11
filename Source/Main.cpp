@@ -88,11 +88,6 @@ int main()
 				game_over = 1;
 			}
 
-			if (1 == enemy_manager.reached_player(player.get_y()))
-			{
-				player.die();
-			}
-
 			if (0 == game_over)
 			{
 				if (0 == enemy_manager.get_enemies().size())
@@ -153,7 +148,7 @@ int main()
 					ufo.draw(window);
 
 					//So much code just to show the duration of the powerup (or power-DOWN!).
-					if (0 < player.get_current_power())
+					if (player.get_current_power() != Power_type::Nothing)
 					{
 						powerup_bar_sprite.setColor(sf::Color(255, 255, 255));
 						powerup_bar_sprite.setPosition(SCREEN_WIDTH - powerup_bar_texture.getSize().x - 0.25f * BASE_SIZE, 0.25f * BASE_SIZE);
@@ -167,25 +162,25 @@ int main()
 
 						switch (player.get_current_power())
 						{
-							case 1:
+							case Power_type::Shield:
 							{
 								powerup_bar_sprite.setColor(sf::Color(0, 146, 255));
 
 								break;
 							}
-							case 2:
+							case Power_type::Fast_Reload:
 							{
 								powerup_bar_sprite.setColor(sf::Color(255, 0, 0));
 
 								break;
 							}
-							case 3:
+							case Power_type::Triple_bullets:
 							{
 								powerup_bar_sprite.setColor(sf::Color(255, 219, 0));
 
 								break;
 							}
-							case 4:
+							case Power_type::Mirror:
 							{
 								powerup_bar_sprite.setColor(sf::Color(219, 0, 255));
 							}

@@ -114,5 +114,5 @@ struct Bullet
 	}
 };
 
-enum class Power_type {Nothing, Shield, Fast_Reload, Triple_bullets, Mirror}
-enum class Move_direction {Right, Left, Stable}
+enum class Power_type {Nothing, Shield, Fast_Reload, Triple_bullets, Mirror};
+enum class Move_direction {Right, Left, Stable};

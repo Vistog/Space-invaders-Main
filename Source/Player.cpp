@@ -183,11 +183,11 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 				{
 					current_power = Power_type::Nothing;
 
-					shield_animation_over = 0;
+					shield_animation_over = false;
 				}
 				else
 				{
-					dead = 1;
+					dead = true;
 				}
 
 				enemy_bullet.dead = 1;
@@ -230,7 +230,7 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 		
 		if (bullet.dead == false)
 		{
-			if (i_ufo.check_bullet_collision(i_random_engine, bullet.get_hitbox()) = true)
+			if (i_ufo.check_bullet_collision(i_random_engine, bullet.get_hitbox()) == true)
 			{
 				bullet.dead = true;
 			}

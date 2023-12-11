@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Headers/PowerUp.hpp"
-#include "Headers/Global.hpp"
+#include "Powerup.hpp"
+#include "Global.hpp"
 
 class Ufo
 {

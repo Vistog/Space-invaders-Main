@@ -9,7 +9,7 @@
 
 Ufo::Ufo(std::mt19937_64& i_random_engine) :
 	y(BASE_SIZE),
-	powerup_distribution(0, POWERUP_TYPES - 1),
+	powerup_distribution(1, POWERUP_TYPES),
 	timer_distribution(UFO_TIMER_MIN, UFO_TIMER_MAX),
 	animation(UFO_ANIMATION_SPEED, 2 * BASE_SIZE, "Resources/Images/Ufo.png"),
 	explosion(EXPLOSION_ANIMATION_SPEED, 2 * BASE_SIZE, "Resources/Images/ExplosionBig.png")
@@ -71,7 +71,7 @@ void Ufo::draw(sf::RenderWindow& i_window)
 
 	for (Powerup& powerup : powerups)
 	{
-		powerup_animations[static_cast<int>(powerup.type)].draw(powerup.x, powerup.y, i_window);
+		powerup_animations[static_cast<int>(powerup.type) - 1].draw(powerup.x, powerup.y, i_window);
 	}
 }
 

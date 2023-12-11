@@ -10,6 +10,7 @@ set(SOURCES
     Source/EnemyManager.cpp
     Source/Main.cpp
     Source/Player.cpp
+    Source/Powerup.cpp
     Source/Ufo.cpp
 )
 
