@@ -7,12 +7,13 @@
 #include "Headers/Global.hpp"
 #include "Headers/Ufo.hpp"
 
-Ufo::Ufo(std::mt19937_64& i_random_engine) :
+Ufo::Ufo(std::mt19937_64& i_random_engine, std::vector<Powerup>& main_powerups) :
 	y(BASE_SIZE),
 	powerup_distribution(1, POWERUP_TYPES),
 	timer_distribution(UFO_TIMER_MIN, UFO_TIMER_MAX),
 	animation(UFO_ANIMATION_SPEED, 2 * BASE_SIZE, "Resources/Images/Ufo.png"),
-	explosion(EXPLOSION_ANIMATION_SPEED, 2 * BASE_SIZE, "Resources/Images/ExplosionBig.png")
+	explosion(EXPLOSION_ANIMATION_SPEED, 2 * BASE_SIZE, "Resources/Images/ExplosionBig.png"),
+	powerups(main_powerups)
 {
 	reset(1, i_random_engine);
 
@@ -48,8 +49,6 @@ Power_type Ufo::check_powerup_collision(const sf::IntRect& i_player_hitbox)
 		if (powerup.dead == false && powerup.get_hitbox().intersects(i_player_hitbox) == true)
 		{
 			powerup.dead = true;
-
-			//Plus 1, because 0 means we didn't pick up any powerups.
 			return powerup.type;
 		}
 	}

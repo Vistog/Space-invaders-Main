@@ -21,12 +21,12 @@ class Ufo
 	std::vector<Animation> powerup_animations;
 
 	//Yes, the UFO is responsible for the powerups too.
-	std::vector<Powerup> powerups;
+	std::vector<Powerup>& powerups;
 
 	Animation animation;
 	Animation explosion;
 public:
-	Ufo(std::mt19937_64& i_random_engine);
+	Ufo(std::mt19937_64& i_random_engine, std::vector<Powerup>& main_powerups);
 
 	bool check_bullet_collision(std::mt19937_64& i_random_engine, const sf::IntRect& i_bullet_hitbox);
 

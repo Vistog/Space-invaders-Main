@@ -51,7 +51,10 @@ int main()
 
 	Player player;
 
-	Ufo ufo(random_engine);
+	std::vector<Powerup> powerups;
+
+	Ufo ufo(random_engine, powerups);
+
 
 	background_sprite.setTexture(background_texture);
 	powerup_bar_sprite.setTexture(powerup_bar_texture);
@@ -119,6 +122,10 @@ int main()
 					enemy_manager.tick(random_engine);
 
 					ufo.tick(random_engine);
+
+					for (Powerup& powerup : powerups) {
+						powerup.tick();
+					}
 				}
 			}
 			else if (1 == sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
