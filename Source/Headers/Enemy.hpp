@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Bullet.hpp"
+
 class Enemy
 {
 	//-1 - Left

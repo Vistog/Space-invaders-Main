@@ -5,6 +5,7 @@
 #include "Headers/Global.hpp"
 #include "Headers/Enemy.hpp"
 
+
 Enemy::Enemy(unsigned char i_type, unsigned short i_x, unsigned short i_y) :
 	direction(0 == (i_y / BASE_SIZE) % 2 ? -1 : 1),
 	health(1 + i_type),

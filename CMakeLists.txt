@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCES 
     Source/Animation.cpp
+    Source/Bullet.cpp
     Source/DrawText.cpp
     Source/Enemy.cpp
     Source/EnemyManager.cpp
