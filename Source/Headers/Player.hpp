@@ -21,6 +21,7 @@ class Player
 	unsigned short power_timer;
 	unsigned short x;
 	unsigned short y;
+	unsigned short fire_number;
 
 	std::vector<Bullet> bullets;
 
@@ -28,7 +29,12 @@ class Player
 	sf::Sprite sprite;
 
 	sf::Texture bullet_texture;
-	sf::Texture texture;
+
+	sf::Texture default_spaceship_texture;
+	sf::Texture shield_spaceship_texture;
+	sf::Texture fast_reload_spaceship_texture;
+	sf::Texture triple_bullet_spaceship_texture;
+	sf::Texture mirror_spaceship_texture;
 
 	Animation explosion;
 public:
@@ -39,6 +45,7 @@ public:
 	bool get_rotate_animation_over() const;
 
 	Power_type get_current_power() const;
+	
 
 	unsigned short get_power_timer() const;
 	unsigned short get_y() const;

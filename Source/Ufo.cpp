@@ -35,7 +35,6 @@ bool Ufo::check_bullet_collision(const sf::IntRect& i_bullet_hitbox)
 			explosion_x = x;
 
 			powerups.push_back(Powerup(x + 0.5f * BASE_SIZE, y, static_cast<Power_type>(powerup_distribution(random_engine))));
-
 			return true;
 		}
 	}

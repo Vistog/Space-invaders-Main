@@ -4,7 +4,8 @@
 
 //I didn't wanna make PLAYER_SIZE, ENEMY_SIZE, BULLET_SIZE, so I just defined the base size.
 constexpr unsigned char BASE_SIZE = 16;
-constexpr unsigned char ENEMY_BULLET_SPEED = 2;
+constexpr unsigned char PLAYER_SIZE = 32;
+constexpr unsigned char ENEMY_BULLET_SPEED = 1;
 //I explained this in "Enemy.hpp". AND I DON'T LIKE TO REPEAT MYSELF!
 constexpr unsigned char ENEMY_HIT_TIMER_DURATION = 2;
 //The more enemies we kill, the faster they become.

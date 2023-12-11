@@ -10,15 +10,19 @@
 #include "Headers/Player.hpp"
 
 Player::Player() :
-	explosion(EXPLOSION_ANIMATION_SPEED, BASE_SIZE, "Resources/Images/Explosion.png")
+	explosion(EXPLOSION_ANIMATION_SPEED, BASE_SIZE, "Resources/Images/Explosion.png"),
+	fire_number(0)
 {
 	reset();
 
 	bullet_texture.loadFromFile("Resources/Images/PlayerBullet.png");
-	texture.loadFromFile("Resources/Images/Player.png");
+	default_spaceship_texture.loadFromFile("Resources/Images/Default_spaceship_animation.png");
+	shield_spaceship_texture.loadFromFile("Resources/Images/Shield_spaceship_animation.png");
+	fast_reload_spaceship_texture.loadFromFile("Resources/Images/Fast_reload_spaceship_animation.png");
+	triple_bullet_spaceship_texture.loadFromFile("Resources/Images/Triple_bullet_spaceship_animation.png");
+	mirror_spaceship_texture.loadFromFile("Resources/Images/Mirror_spaceship_animation.png");
 
 	bullet_sprite.setTexture(bullet_texture);
-	sprite.setTexture(texture);
 }
 
 bool Player::get_dead() const
@@ -55,8 +59,36 @@ void Player::draw(sf::RenderWindow& i_window)
 {
 	if (dead == false)
 	{
-		sprite.setPosition(x, y);
-		sprite.setTextureRect(sf::IntRect(BASE_SIZE * static_cast<int>(current_power), 0, BASE_SIZE, BASE_SIZE));
+		sprite.setPosition(x - 8, y);
+		switch (current_power)
+		{
+		case Power_type::Nothing:
+			sprite.setTexture(default_spaceship_texture);
+			sprite.setTextureRect(sf::IntRect(PLAYER_SIZE * fire_number, 0, PLAYER_SIZE, PLAYER_SIZE));
+			break;
+		case Power_type::Shield:
+			sprite.setTexture(shield_spaceship_texture);
+			sprite.setTextureRect(sf::IntRect(PLAYER_SIZE * fire_number, 0, PLAYER_SIZE, PLAYER_SIZE));
+			break;
+		case Power_type::Fast_Reload:
+			sprite.setTexture(fast_reload_spaceship_texture);
+			sprite.setTextureRect(sf::IntRect(PLAYER_SIZE * fire_number, 0, PLAYER_SIZE, PLAYER_SIZE));
+			break;
+		case Power_type::Triple_bullets:
+			sprite.setTexture(triple_bullet_spaceship_texture);
+			sprite.setTextureRect(sf::IntRect(PLAYER_SIZE * fire_number, 0, PLAYER_SIZE , PLAYER_SIZE));
+			break;
+		case Power_type::Mirror:
+			sprite.setTexture(mirror_spaceship_texture);
+			sprite.setTextureRect(sf::IntRect(PLAYER_SIZE * fire_number, 0, PLAYER_SIZE, PLAYER_SIZE));
+			break;
+		default:
+			throw "Unexpected POwerUp type";
+			break;
+		}
+
+		fire_number ++;
+		if (fire_number == 4) {  fire_number = 0;  }
 
 		for (const Bullet& bullet : bullets)
 		{
@@ -112,14 +144,14 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 		{
 			if (current_power == Power_type::Mirror)
 			{
-				x = std::min<int>(PLAYER_MOVE_SPEED + x, SCREEN_WIDTH - 2 * BASE_SIZE);
+				x = std::min<int>(PLAYER_MOVE_SPEED + x, SCREEN_WIDTH - PLAYER_SIZE);
 
 				last_move = current_move;
 				current_move = Move_direction::Right;
 			}
 			else
 			{
-				x = std::max<int>(x - PLAYER_MOVE_SPEED, BASE_SIZE);
+				x = std::max<int>(x - PLAYER_MOVE_SPEED, PLAYER_SIZE);
 
 				last_move = current_move;
 				current_move = Move_direction::Left;
@@ -130,14 +162,14 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 		{
 			if (current_power == Power_type::Mirror)
 			{
-				x = std::max<int>(x - PLAYER_MOVE_SPEED, BASE_SIZE);
+				x = std::max<int>(x - PLAYER_MOVE_SPEED, PLAYER_SIZE);
 								
 				last_move = current_move;
 				current_move = Move_direction::Left;
 			}
 			else
 			{
-				x = std::min<int>(PLAYER_MOVE_SPEED + x, SCREEN_WIDTH - 2 * BASE_SIZE);
+				x = std::min<int>(PLAYER_MOVE_SPEED + x, SCREEN_WIDTH - PLAYER_SIZE);
 				last_move = current_move;
 				current_move = Move_direction::Right;
 			}
@@ -165,8 +197,8 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 
 				if (current_power == Power_type::Triple_bullets)
 				{
-					bullets.push_back(Bullet(0, -PLAYER_BULLET_SPEED, x - 0.375f * BASE_SIZE, y));
-					bullets.push_back(Bullet(0, -PLAYER_BULLET_SPEED, x + 0.375f * BASE_SIZE, y));
+					bullets.push_back(Bullet(0, -PLAYER_BULLET_SPEED, x - 0.5f * BASE_SIZE, y));
+					bullets.push_back(Bullet(0, -PLAYER_BULLET_SPEED, x + 0.55f * BASE_SIZE, y));
 				}
 			}
 		}
@@ -230,7 +262,7 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 		
 		if (bullet.dead == false)
 		{
-			if (i_ufo.check_bullet_collision(i_random_engine, bullet.get_hitbox()) == true)
+			if (i_ufo.check_bullet_collision(bullet.get_hitbox()) == true)
 			{
 				bullet.dead = true;
 			}
@@ -260,5 +292,5 @@ void Player::tick(std::mt19937_64& i_random_engine, std::vector<Bullet>& i_enemy
 
 sf::IntRect Player::get_hitbox() const
 {
-	return sf::IntRect(x + 0.125f * BASE_SIZE, y + 0.125f * BASE_SIZE, 0.75f * BASE_SIZE, 0.75f * BASE_SIZE);
+	return sf::IntRect(x - 0.0f * PLAYER_SIZE, y + 0.4f * PLAYER_SIZE,  0.7f * PLAYER_SIZE, 0.6f * PLAYER_SIZE);
 }
